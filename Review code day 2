@@ -1,0 +1,473 @@
+
+TemPlate_CoreSW:
+config t
+vlan 25
+ name accenture.com
+ exit
+Int vlan 25
+ no shut
+ ip add 10.0.8.1 255.255.248.0
+ip dhcp excluded-add 10.0.8.0 10.0.8.150
+ip dhcp pool accenture.com
+ network 10.0.8.0 255.255.248.0
+ default-router 10.0.8.1
+ domain-name accenture.com
+ dns-server 10.31.1.10
+ option 150 ip 10.31.100.8
+ Int Fa 0/7
+  swi Voice vlan 25
+  do sh ip dhcp binding
+
+
+
+design network for concentrix.com with 3500 users
+
+
+using 10.0.0.0/1
+
+C  3500 = 12Bits  
+S   /32 - /12 = /20  3rd 16i 255.255.240.0
+I   ipasok si 16 sa 3rd
+
+concentrix
+network    10.0.16.0/20
+first host  10.0.16.1/20
+last host   10.0.31.254/20
+Broadcast   10.0.31.255/20
+
+not concentrix.com 10.0.32.0
+
+
+config t
+vlan 25
+ name concentrix.com 
+ exit
+Int vlan 25
+ no shut
+ ip add 10.0.16.1 255.255.240.0
+ip dhcp excluded-add 10.0.16.0 10.0.16.100
+ip dhcp pool concentrix.com 
+ network 10.0.16.0 255.255.240.0
+ default-router 10.0.16.1
+ domain-name concentrix.com 
+ dns-server 10.31.1.10
+ option 150 ip 10.31.100.8
+ Int Fa 0/7
+  swi Voice vlan 25
+  shut
+  no shut
+  end
+
+
+
+
+network for smart.com.ph 35000 subs
+using 10.0.100.0/10
+
+
+C 35000 16b
+S  /32 - /16 = /16 255.255.0.0
+I   16 2nd = 1i
+
+N  10.1.0.0 /16 
+F  10.1.0.1 
+L  10.1.255.254
+B  10.1.255.255
+
+not Smart.com.ph : 10.2.0.0
+
+
+config t
+vlan 25
+ name Smart.com.ph
+ exit
+Int vlan 25
+ no shut
+ ip add 10.1.0.1 255.255.0.0
+ip dhcp excluded-add 10.1.0.1 10.1.0.100
+ip dhcp pool Smart.com.ph
+ network 10.1.0.0 255.255.0.0
+ default-router 10.1.0.1
+ domain-name Smart.com.ph
+ dns-server 10.31.1.10
+ option 150 ip 10.31.100.8
+ Int Fa 0/7
+  swi Voice vlan 25
+  shut
+  no shut
+  end
+
+
+
+
+design a network PNP.GOV.PH with 195 call center personel using 10.0.0./4
+
+
+ 
+C  195 = 8bits  255.255.255.0
+S  /32 - /8  = 24b  3rd 1i
+I    3rd ipasok 1i
+
+N  10.0.1.0 /24  255.255.255.0
+F  10.0.1.1 /24
+L  10.0.1.254
+B  10.0.1.255
+
+PNP.GOV.PH not incuded - 10.0.2.0
+
+
+
+config t
+vlan 25
+ name PNP.GOV.PH
+ exit
+Int vlan 25
+ no shut
+ ip add 10.0.1.1 255.255.255.0
+ip dhcp excluded-add 10.0.1.1 10.0.1.10
+ip dhcp pool PNP.GOV.PH
+ network 10.0.1.0 255.255.255.0
+ default-router 10.0.1.1
+ domain-name PNP.GOV.PH
+ dns-server 10.31.1.10
+ option 150 ip 10.31.100.8
+ Int Fa 0/7
+  swi Voice vlan 25
+  shut
+  no shut
+  end
+
+
+
+
+design a network that exclusive only for 15 users each in 3 department of BDO.com bank
+
+C = 15  = 4bits
+S  32-4 = /28 4th 16i 255.255.255.240
+I  ipasok sa 4th si 16i
+
+
+BDO.com
+
+1st network  = 10.0.0.16  A1 P1
+F 10.0.0.17
+L 10.0.0.30
+B 10.0.0.31
+
+2nd network 10.0.0.32   S1 C1
+F 10.0.0.33
+L 10.0.0.46
+B 10.0.0.47
+
+3rd network 10.0.0.48  A2 P2
+F 10.0.0.49
+L 10.0.0.62
+B 10.0.0.63
+
+4th network- 10.0.0.64 C2 S2
+F 10.0.0.65
+L 10.0.0.78
+B 10.0.0.79
+
+BDO limit network - 10.0.0.80
+
+
+
+
+1st network A1-P1
+config t
+vlan 101
+ name 1stBDO
+ exit
+Int vlan 101
+ no shut
+ ip add 10.0.0.17 255.255.255.240
+ip dhcp excluded-add 10.0.0.1 10.0.0.18
+ip dhcp pool 1stBDO.com
+ network 10.0.0.16 255.255.255.240
+ default-router 10.0.0.17 
+
+
+ Int e0/0
+  swi access vlan 101
+  end
+P1
+conf t
+ int e0/0
+ ip add dhcp
+ shut
+ no shut
+end
+
+
+2nd network S1-C1
+
+config t
+vlan 102
+ name 2ndBDO
+ exit
+Int vlan 102
+ no shut
+ ip add 10.0.0.33 255.255.255.240
+ip dhcp excluded-add 10.0.0.33 10.0.0.34
+ip dhcp pool 2ndBDO.com
+ network 10.0.0.32 255.255.255.240
+ default-router 10.0.0.33
+
+
+ Int e1/0
+  swi access vlan 102
+  end
+S1
+conf t
+ int e1/0
+ ip add dhcp
+ shut
+ no shut
+end
+
+
+
+3rd network A2-P2
+config t
+vlan 103
+ name 3rdBDO
+ exit
+Int vlan 103
+ no shut
+ ip add 10.0.0.49 255.255.255.240
+ip dhcp excluded-add 10.0.0.49 10.0.0.50
+ip dhcp pool 3rdBDO.com
+ network 10.0.0.48 255.255.255.240
+ default-router 10.0.0.49
+
+
+ Int e1/0
+  swi access vlan 103
+  end
+
+
+P2
+conf t
+ int e1/0
+ ip add dhcp
+ shut
+ no shut
+end
+
+
+
+
+
+4thnetwork C2-S2
+config t
+vlan 104
+ name 4thBDO
+ exit
+Int vlan 104
+ no shut
+ ip add 10.0.0.65 255.255.255.240
+ip dhcp excluded-add 10.0.0.65 10.0.0.66
+ip dhcp pool 4thBDO.com
+ network 10.0.0.64 255.255.255.240
+ default-router 10.0.0.65
+
+
+ Int e1/0
+  swi access vlan 104
+  end
+
+
+S2
+conf t
+ int e1/0
+ ip add dhcp
+ shut
+ no shut
+end
+
+
+VLSM 
+
+design network of MVP group of companies with the ff
+major IP - major ip 10.100.0.0 
+
+Meralco.com = 1200 employees
+Smart.com.ph =900  employees
+Tv5.net = 500 employees
+Pldt.com.ph = 2200 employees
+
+
+sort first from the most number of host to least number of host
+
+Pldt.com.ph = 2200 employees
+
+C 2200 = 12 bits
+S /32 - /12 =21  (3rd, 16i) 255.255.240.0
+I ipasok sa 3rd 16i
+
+PLDT Net - 10.100.16.0/20 
+F 10.100.16.1
+L 10.100.16.30
+B 10.100.16.31
+
+Meralco - 1200 employess
+
+C 1200 = 11 bits
+S /32 - /11 =21  (3rd, 8i) 255.255.248.0
+I ipasok sa 3rd 8i
+
+
+Meralco.com = 10.100.32.0
+F: 10.100.32.1
+L 10.100.39.254
+B 10.100.39.255
+
+Smart.com.ph = 900 employess
+
+C 900 =10 bits
+S /32- /10 = /22 3rd 4i 255.255.252.0
+I iasok sa 3rd I
+
+Smart.com = 10.100.40.0
+F: 10.100.40.1
+L 10.100.43.254
+B 10.100.43.255
+
+Tv5.net = 500 employess
+
+C 500 =9 bits
+S /32- /9 = /23 3rd 2i 255.255.254.0
+I iasok sa 3rd I
+
+
+Tv5.net = 10.100.44.0
+F: 10.100.44.1
+L  10.100.44.0
+B  10.100.45.0
+
+
+not mvp : 10.100.46.0
+
+
+
+
+
+
+PLDT C2-S2
+config t
+vlan 2004
+ name pldt.com.ph
+ exit
+Int vlan 2004
+ no shut
+ ip add 10.100.16.1 255.255.240.0
+ip dhcp excluded-add 10.100.16.1 10.100.16.20
+ip dhcp pool pldt.com.ph
+ network 10.100.16.0 255.255.240.0
+ default-router 10.100.16.1
+
+
+ Int e1/0
+  swi access vlan 2004
+  end
+
+
+S2
+conf t
+ int e1/0
+ ip add dhcp
+ shut
+ no shut
+end
+
+---------------
+
+Meralco - A1-P1
+config t
+vlan 2001
+ name Meralco.com
+ exit
+Int vlan 2001
+ no shut
+ ip add 10.100.32.1 255.255.248.0
+ip dhcp excluded-add 10.100.32.1 10.100.32.25
+ip dhcp pool Meralco.com
+ network 10.100.32.0 255.255.240.0
+ default-router 10.100.32.1
+
+
+ Int e0/0
+  swi access vlan 2001
+  end
+
+
+P1
+conf t
+ int e0/0
+ ip add dhcp
+ shut
+ no shut
+end
+---------------------------------------
+
+SmartNetwork - C1-S1
+config t
+vlan 2002
+ name Smart.com.ph
+ exit
+Int vlan 2001
+ no shut
+ ip add 10.100.40.1 255.255.252.0
+ip dhcp excluded-add 10.100.40.1 10.100.40.15
+ip dhcp pool Smart.com.ph
+ network 10.100.40.0 255.255.252.0
+ default-router 10.100.40.1
+
+
+ Int e0/0
+  swi access vlan 2002
+  end
+
+
+S1
+conf t
+ int e0/0
+ ip add dhcp
+ shut
+ no shut
+end
+
+
+
+-------------------
+Tv5.net - A2-P2
+config t
+vlan 2003
+ name TV5.net
+ exit
+Int vlan 2003
+ no shut
+ ip add 10.100.44.1 255.255.254.0
+ip dhcp excluded-add 10.100.44.1 10.100.44.10
+ip dhcp pool Smart.com.ph
+ network 10.100.44.0 255.255.254.0
+ default-router 10.100.44.1
+
+
+ Int e1/0
+  swi access vlan 2003
+  end
+
+
+p2
+conf t
+ int e1/0
+ ip add dhcp
+ shut
+ no shut
+end
+
+
+
+ 
