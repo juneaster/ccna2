@@ -303,13 +303,12 @@ sort first from the most number of host to least number of host
 Pldt.com.ph = 2200 employees
 
 C 2200 = 12 bits
-S /32 - /12 =21  (3rd, 16i) 255.255.240.0
-I ipasok sa 3rd 16i
 
-PLDT Net - 10.100.16.0/20 
-F 10.100.16.1
-L 10.100.16.30
-B 10.100.16.31
+
+PLDT Net - 10.100.8.0/20 
+F 10.100.8.1
+L 10.100.8.30
+B 10.100.8.31
 
 Meralco - 1200 employess
 
@@ -329,8 +328,8 @@ C 900 =10 bits
 S /32- /10 = /22 3rd 4i 255.255.252.0
 I iasok sa 3rd I
 
-Smart.com = 10.100.40.0
-F: 10.100.40.1
+Smart.com = 10.100.4.0
+F: 10.100.4.1
 L 10.100.43.254
 B 10.100.43.255
 
@@ -338,7 +337,7 @@ Tv5.net = 500 employess
 
 C 500 =9 bits
 S /32- /9 = /23 3rd 2i 255.255.254.0
-I iasok sa 3rd I
+I iasok sa 3rd 2I
 
 
 Tv5.net = 10.100.44.0
