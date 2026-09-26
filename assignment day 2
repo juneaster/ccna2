@@ -53,4 +53,94 @@ B 10.100.8.31
 
 
 
+update this image for A1
+
+VLAN 10
+
+domain name : HP.com
+number of users : 2000
+Reserved IP : 30 IP
+
+
+update this image for D1
+
+VLAN 20
+
+domain name : ACER.com
+number of users : 1500
+Reserved IP : 25 IP
+
+
+update this image for A2
+
+VLAN 30
+
+domain name : ASUS.com
+number of users : 500
+Reserved IP : 15 IP
+
+
+update this image for D2
+
+VLAN 40
+
+domain name : LENOVO.com
+number of users : 1000
+Reserved IP : 20 IP
+
+
+
+HP.com = 2000
+ACER.com =  1500
+LENOVO.com = 100
+ASUS.com = 500
+
+
+ACER.com =  1500
+ 
+C 1500 = 11 bits
+S /32 - /11 =21  (3rd, 8i) 255.255.248.0
+I ipasok sa 3rd 8i
+
+HP network 10.0.8.0/21
+First  10.0.8.1
+Last   10.0.15.254
+Broad cast 10.0.15.255
+
+
+
+ACER C1-S1
+config t
+vlan 20
+ name ACER.com
+ exit
+Int vlan 20
+ no shut
+ ip add 10.0.8.1 255.255.248.0
+ip dhcp excluded-add 10.0.8.1 10.0.8.10
+ip dhcp pool pldt.com.ph
+ network 10.0.8.0 255.255.248.0
+ default-router 10.0.8.1
+
+
+ Int e1/0
+  swi access vlan 20
+  end
+
+
+S1
+conf t
+ int e1/0
+ ip add dhcp
+ shut
+ no shut
+end
+
+
+
+
+
+
+
+
 
