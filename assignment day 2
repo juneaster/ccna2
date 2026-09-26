@@ -1,0 +1,56 @@
+update this image for A1
+
+VLAN 10
+
+domain name : HP.com
+number of users : 2000
+Reserved IP : 30 IP
+
+
+update this image for D1
+
+VLAN 20
+
+domain name : ACER.com
+number of users : 1500
+Reserved IP : 25 IP
+
+
+update this image for A2
+
+VLAN 30
+
+domain name : ASUS.com
+number of users : 500
+Reserved IP : 15 IP
+
+
+update this image for D2
+
+VLAN 40
+
+domain name : LENOVO.com
+number of users : 1000
+Reserved IP : 20 IP
+
+
+
+HP.com = 2000
+ACER.com =  1500
+LENOVO.com = 100
+ASUS.com = 500
+
+ 
+C 200
+S /32 - /12 =20  (3rd, 8i) 255.255.248.0
+I ipasok sa 3rd 16i
+
+HP network
+F 10.100.8.1
+L 10.100.8.30
+B 10.100.8.31
+
+
+
+
+
