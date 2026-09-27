@@ -462,3 +462,29 @@ Max.tranmission Unit - 1500
 
 
 
+!default static for P1 and P2 - to config Gateway of Last Resort
+
+
+P1
+
+conf t
+ ip route 0.0.0.0 0.0.0.0 10.2.1.1
+end
+
+
+P2
+
+conf t
+ ip route 0.0.0.0 0.0.0.0 10.2.2.1
+end
+
+restart vlan or interface or switch
+
+conf t
+ int e1/0 or e0/0 
+ shut
+ no shut
+ end
+
+
+
